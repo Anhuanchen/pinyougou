@@ -45,7 +45,6 @@ public class BrandController {
             PageResult pageResult = brandService.findByPages(PageNum, PageSize);
             return pageResult;
         }
-        //?????
         return null;
     }
 

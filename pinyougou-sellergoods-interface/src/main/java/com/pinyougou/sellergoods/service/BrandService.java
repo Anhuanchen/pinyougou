@@ -3,7 +3,6 @@ package com.pinyougou.sellergoods.service;
 import PageResult.PageResult;
 import com.pinyougou.pojo.TbBrand;
 import PageResult.InsertResult;
-import PageResult.DeleteResult;
 import java.util.List;
 
 public interface BrandService {

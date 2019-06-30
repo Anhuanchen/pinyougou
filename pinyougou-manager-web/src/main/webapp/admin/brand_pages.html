@@ -13,114 +13,133 @@
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
     <!--引入angularjs-->
     <script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
+    <script type="text/javascript" src="../js/base_pagination.js"></script>
+
     <!--分页组件开始-->
     <script src="../plugins/angularjs/pagination.js"></script>
     <link rel="stylesheet" href="../plugins/angularjs/pagination.css">
-
     <!--分页组件结束-->
-    <script type="text/javascript">
-        // 定义模块
-        var app = angular.module("pinyougou", ['pagination']);
+    <script type="text/javascript" src="../js/controller/baseController.js"></script>
+    <script type="text/javascript" src="../js/controller/brandController.js"></script>
+    <script type="text/javascript" src="../js/service/brandService.js"></script>
 
-        //创建控制中心
-        app.controller("myController", function ($scope, $http) {
-            $scope.paginationConf = {
-                currentPage: 1,  //当前页码
+    <!--<script type="text/javascript">-->
+        <!--定义模块-->
+        <!--var app = angular.module("pinyougou", ['pagination']);-->
+        <!--创建服务中心-->
+        <!--app.service("brandService",function ($http) {-->
+            <!--//定义方法新增品牌,修改品牌-->
+            <!--this.insertBrand = function (entity) {-->
+                <!--return $http.post('../brand/insertBrand.do', entity);-->
+            <!--}-->
+            <!--//定义方法查询品牌-->
+            <!--this.findOne = function (id) {-->
+                <!--return $http.get('../brand/findOne.do?id='+ id);-->
+            <!--}-->
+            <!--//删除选中的ids-->
+            <!--this.deleIds = function (ids) {-->
+                <!--return $http.post("/brand/deleResult.do", ids)-->
+            <!--}-->
+            <!--//模糊查询-->
+            <!--this.findIndistinct = function (page,size,IndistinctEntity) {-->
+                <!--return $http.post('../brand/findIndistinct.do?page=' + page + '&size=' + size, IndistinctEntity);-->
+            <!--}-->
+        <!--});-->
 
-                totalItems: 10,  //总条数
+        <!--//创建控制中心-->
+        <!--app.controller("brandController", function ($scope, $http) {-->
+            <!--$scope.paginationConf = {-->
+                <!--currentPage: 1,  //当前页码-->
 
-                itemsPerPage: 10, //每页显示条数
+                <!--totalItems: 10,  //总条数-->
 
-                perPageOptions: [1, 2, 3, 4, 5],//页码选项
-                //更改页面时触发事件
-                onChange: function () {
-                    //首先查询
-                    $scope.reloadList();
+                <!--itemsPerPage: 10, //每页显示条数-->
 
-                }
-            };
+                <!--perPageOptions: [1, 2, 3, 4, 5],//页码选项-->
+                <!--//更改页面时触发事件-->
+                <!--onChange: function () {-->
+                    <!--//首先查询-->
+                    <!--$scope.reloadList();-->
+                <!--}-->
+            <!--};-->
 
-            $scope.reloadList = function () {
-                $scope.findIndistinct($scope.paginationConf.currentPage, $scope.paginationConf.itemsPerPage);
-            };
+            <!--$scope.reloadList = function () {-->
+                <!--$scope.findIndistinct($scope.paginationConf.currentPage, $scope.paginationConf.itemsPerPage);-->
+            <!--};-->
 
-            // //定义方法品牌分页
-            // $scope.findByPages = function (page, size) {
-            //     $http.get('../brand/findByPages.do?page=' + page + '&size=' + size).success(
-            //         function (response) {
-            //             $scope.list = response.rows;
-            //             $scope.paginationConf.totalItems = response.totalCount;
-            //         });
-            // }
+            <!--// //定义方法品牌分页-->
+            <!--// $scope.findByPages = function (page, size) {-->
+            <!--//     $http.get('../brand/findByPages.do?page=' + page + '&size=' + size).success(-->
+            <!--//         function (response) {-->
+            <!--//             $scope.list = response.rows;-->
+            <!--//             $scope.paginationConf.totalItems = response.totalCount;-->
+            <!--//         });-->
+            <!--// }-->
 
-            //定义方法新增品牌,修改品牌
-            $scope.insertBrand = function () {
-                $http.post('../brand/insertBrand.do', $scope.entity).success(
-                    function (response) {
-                        if (response.success) {
-                            //添加成功就刷新
-                            $scope.reloadList();
-                        } else {
-                            //添加不成功就弹出一个窗口
-                            alert(response.message);
-                        }
-                    });
-            }
+            <!--//定义方法新增品牌,修改品牌-->
+            <!--$scope.insertBrand = function () {-->
+                <!--//$http.post('../brand/insertBrand.do', $scope.entity)-->
+                   <!--brandService.insertBrand($scope.entity).success(-->
+                    <!--function (response) {-->
+                        <!--if (response.success) {-->
+                            <!--//添加成功就刷新-->
+                            <!--$scope.reloadList();-->
+                        <!--} else {-->
+                            <!--//添加不成功就弹出一个窗口-->
+                            <!--alert(response.message);-->
+                        <!--}-->
+                    <!--});-->
+            <!--}-->
 
-            //定义方法查询品牌
-            $scope.findOne = function (id) {
-                $http.get('../brand/findOne.do?id='+id).success(
-                    function (response) {
-                    $scope.entity=response;
-                });
-            };
+            <!--//定义方法查询品牌-->
+            <!--$scope.findOne = function (id) {-->
+                <!--brandService.findOne(id).success(-->
+                    <!--function (response) {-->
+                    <!--$scope.entity=response;-->
+                <!--});-->
+            <!--};-->
 
-            //定义一个数组ids来接收传递的id
-            $scope.ids=[];
-            //将传递的id存储进ids
-            $scope.pushId=function ($event,id) {
+            <!--//定义一个数组ids来接收传递的id-->
+            <!--$scope.ids=[];-->
+            <!--//将传递的id存储进ids-->
+            <!--$scope.pushId=function ($event,id) {-->
+                <!--//如果被选中，就添加-->
+                <!--if(event.target.checked){-->
+                    <!--$scope.ids.push(id);-->
+                <!--}else{-->
+                <!--//如果没有被选中,找出他的角标，去除选中状态-->
+                    <!--var number =$scope.ids.indexOf(id);-->
+                    <!--$scope.ids.splice(number,1);-->
+                <!--}-->
+            <!--}-->
 
-                //如果被选中，就添加
-                if(event.target.checked){
-                    $scope.ids.push(id);
-                }else{
-                //如果没有被选中,找出他的角标，去除选中状态
-                    var number =$scope.ids.indexOf(id);
-                    $scope.ids.splice(number,1);
-                }
-            }
+            <!--//删除选中的ids-->
+            <!--$scope.deleIds = function () {-->
+                <!--brandService.deleIds(ids).success(-->
+                    <!--function (response) {-->
+                    <!--if(response.success){-->
+                        <!--$scope.reloadList();-->
+                    <!--}else{-->
+                     <!--alert($scope.message);-->
+                    <!--}-->
+                <!--});-->
+            <!--}-->
 
+            <!--$scope.IndistinctEntity={};-->
 
-
-            //删除选中的ids
-            $scope.deleIds = function () {
-                $http.post("/brand/deleResult.do",$scope.ids).success(
-                    function (response) {
-                    if(response.success){
-                        $scope.reloadList();
-                    }else{
-                     alert($scope.message);
-                    }
-                });
-            }
-
-            $scope.IndistinctEntity={};
-
-            //模糊查询
-            $scope.findIndistinct = function (page,size) {
-                $http.post('../brand/findIndistinct.do?page='+page+'&size='+size,$scope.IndistinctEntity).success(
-                    function (response) {
-                    $scope.list=response.rows;
-                    $scope.paginationConf.totalItems=response.totalCount;
-                });
-            }
-
-
-        });
-    </script>
+            <!--//模糊查询-->
+            <!--$scope.findIndistinct = function (page,size) {-->
+               <!--brandService.findIndistinct(page,size,IndistinctEntity).success(-->
+                    <!--function (response) {-->
+                    <!--$scope.list=response.rows;-->
+                    <!--$scope.paginationConf.totalItems=response.totalCount;-->
+                <!--});-->
+            <!--}-->
+        <!--});-->
+    <!--</script>-->
 
 </head>
-<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="myController">
+<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="brandController">
 <!-- .box-body -->
 <div class="box-header with-border">
     <h3 class="box-title">品牌管理</h3>
