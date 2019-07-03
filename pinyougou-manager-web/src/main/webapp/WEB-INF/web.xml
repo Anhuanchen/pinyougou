@@ -35,5 +35,26 @@
   	<servlet-name>springmvc</servlet-name>
   	<url-pattern>*.do</url-pattern>
   </servlet-mapping>
-	
+
+	<!--spring-security权限控制-->
+	<!--加载spring-security配置文件-->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:/spring/spring-Security.xml</param-value>
+	</context-param>
+	<!--注册监听器-->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<!--注册spring-security的过滤器-->
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+    <filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+
 </web-app>

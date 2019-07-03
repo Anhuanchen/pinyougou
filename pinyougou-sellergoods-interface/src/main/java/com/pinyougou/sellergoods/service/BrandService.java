@@ -4,6 +4,7 @@ import PageResult.PageResult;
 import com.pinyougou.pojo.TbBrand;
 import PageResult.InsertResult;
 import java.util.List;
+import java.util.Map;
 
 public interface BrandService {
     /**
@@ -56,4 +57,10 @@ public interface BrandService {
      * @return
      */
     public PageResult findIndistinct(TbBrand tbBrand,int PageNum,int PageSize);
+
+    /**
+     * 品牌下拉列框数据
+     * @return
+     */
+    public List<Map> selectOptionList();
 }

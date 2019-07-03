@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -109,5 +110,10 @@ public class BrandController {
         PageResult pageResult = brandService.findIndistinct(tbBrand, PageNum, PageSize);
 
         return pageResult;
+    }
+
+    @RequestMapping("/selectOptionList")
+    public List<Map> selectOptionList(){
+        return brandService.selectOptionList();
     }
 }

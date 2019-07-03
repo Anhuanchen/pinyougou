@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+<!--设置放行的界面-->
+    <http pattern="/*.html" security="none"></http>
+    <http pattern="/img/**"  security="none"></http>
+    <http pattern="/css/**"  security="none"></http>
+    <http pattern="/js/**"  security="none"></http>
+    <http pattern="/plugins/**"  security="none"></http>
+
+    <http auto-config="true" use-expressions="false">
+        <!--定义过滤规则-->
+        <intercept-url pattern="/**" access="ROLE_ADMIN,ROLE_USER"></intercept-url>
+
+        <!--定义跳转的具体页面-->
+        <!--login-processing-url 这是security提供的登录页面，默认是login，可以自己改-->
+        <form-login
+                login-processing-url="/login.do"
+                login-page="/login.html"
+                default-target-url="/admin/index.html"
+                authentication-failure-url="/login.html"
+                always-use-default-target="true"/>
+        <!--always这个作用：登录之前我选择一个页面访问，会跳转到login页面，当登录之后，他会跳转到我们刚才访问的页面，而不是
+        默认的首页，所以我们要设置这个默认目标为true，表示我们总是会访问默认登录页面-->
+        <!--关闭CSRF,跨域请求伪造-->
+<csrf disabled="true"/>
+
+        <!--允许使用内置框架页-->
+        <headers>
+            <frame-options policy="SAMEORIGIN"/>
+        </headers>
+        <!--退出-->
+        <logout invalidate-session="true" logout-url="/logout.do" logout-success-url="/login.html"/>
+        <!--<csrf disabled="true"/>-->
+    </http>
+
+
+    <!--配置认证,在数据库中验证用户名和密码-->
+    <authentication-manager>
+        <!--&lt;!&ndash; 切换成数据库中的用户名和密码 ,定义userService读取密码&ndash;&gt;-->
+        <!--<authentication-provider user-service-ref="userService">-->
+            <!--&lt;!&ndash; 配置加密的方式 &ndash;&gt;-->
+            <!--<password-encoder ref="passwordEncoder"/>-->
+        <!--</authentication-provider>-->
+        <authentication-provider>
+            <user-service>
+            <user name="user" password="456" authorities="ROLE_USER"/>
+            <user name="admin" password="123" authorities="ROLE_ADMIN"/>
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
+
+    <!--开启服务器端方法级别权限控制-->
+    <global-method-security jsr250-annotations="enabled"/>
+
+    <!-- 配置加密类 -->
+    <!--<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>-->
+</beans:beans>

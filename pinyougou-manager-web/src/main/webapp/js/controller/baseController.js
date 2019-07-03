@@ -34,4 +34,19 @@ app.controller("baseController", function ($scope) {
             $scope.ids.splice(number,1);
         }
     }
+
+    //把json格式转换为字符串
+    $scope.jsonToString=function (jsonString,key) {
+        //得到json的集合
+        var json=JSON.parse(jsonString);
+        var value="";
+        for (var i = 0; i <json.length; i++) {
+            if(i>0){
+                value+=","
+            }
+            value+=json[i][key];
+        }
+        return value;
+
+    }
 })

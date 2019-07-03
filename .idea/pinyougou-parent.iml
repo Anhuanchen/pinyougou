@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="fileset" name="Spring Application Context" removed="false">
+          <file>file://$MODULE_DIR$/pinyougou-sellergoods-service/src/main/resources/spring/applicationContext-service.xml</file>
+          <file>file://$MODULE_DIR$/pinyougou-manager-web/target/pinyougou-manager-web-1.0-SNAPSHOT/WEB-INF/classes/spring/springmvc.xml</file>
+          <file>file://$MODULE_DIR$/pinyougou-sellergoods-service/target/pinyougou-sellergoods-service-1.0-SNAPSHOT/WEB-INF/classes/spring/applicationContext-service.xml</file>
+          <file>file://$MODULE_DIR$/pinyougou-dao/target/classes/spring/applicationContext-dao.xml</file>
+          <file>file://$MODULE_DIR$/pinyougou-sellergoods-service/target/classes/spring/applicationContext-tx.xml</file>
+          <file>file://$MODULE_DIR$/pinyougou-manager-web/target/classes/spring/springmvc.xml</file>
+          <file>file://$MODULE_DIR$/pinyougou-shop-web/target/classes/spring/springmvc.xml</file>
+          <file>file://$MODULE_DIR$/pinyougou-manager-web/src/main/resources/spring/springmvc.xml</file>
+          <file>file://$MODULE_DIR$/pinyougou-sellergoods-service/src/main/resources/spring/applicationContext-tx.xml</file>
+          <file>file://$MODULE_DIR$/pinyougou-shop-web/target/pinyougou-shop-web-1.0-SNAPSHOT/WEB-INF/classes/spring/springmvc.xml</file>
+          <file>file://$MODULE_DIR$/pinyougou-dao/src/main/resources/spring/applicationContext-dao.xml</file>
+          <file>file://$MODULE_DIR$/pinyougou-shop-web/src/main/resources/spring/springmvc.xml</file>
+          <file>file://$MODULE_DIR$/pinyougou-sellergoods-service/target/pinyougou-sellergoods-service-1.0-SNAPSHOT/WEB-INF/classes/spring/applicationContext-tx.xml</file>
+          <file>file://$MODULE_DIR$/pinyougou-sellergoods-service/target/classes/spring/applicationContext-service.xml</file>
+        </fileset>
+      </configuration>
+    </facet>
+  </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />

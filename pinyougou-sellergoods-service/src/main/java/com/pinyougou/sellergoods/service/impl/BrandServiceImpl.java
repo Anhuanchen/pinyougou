@@ -15,6 +15,7 @@ import com.pinyougou.sellergoods.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BrandServiceImpl implements BrandService {
@@ -134,5 +135,15 @@ public class BrandServiceImpl implements BrandService {
         Page<TbBrand> page = (Page<TbBrand>) tbBrandMapper.selectByExample(tbBrandExample);
         //返回PageResult对象【总条数，当前页对象】
         return new PageResult(page.getTotal(),page.getResult());
+    }
+
+    /**
+     * 品牌下拉框列表数据
+     * @return
+     */
+    @Override
+    public List<Map> selectOptionList() {
+        List<Map> maps = tbBrandMapper.selectOptionList();
+        return maps;
     }
 }

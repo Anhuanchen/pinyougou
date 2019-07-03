@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.springframework.security:spring-security-taglibs:4.1.0.RELEASE">
+    <CLASSES>
+      <root url="jar://F:/develop/maven/apache-maven-3.6.0/mvn_respository/org/springframework/security/spring-security-taglibs/4.1.0.RELEASE/spring-security-taglibs-4.1.0.RELEASE.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://F:/develop/maven/apache-maven-3.6.0/mvn_respository/org/springframework/security/spring-security-taglibs/4.1.0.RELEASE/spring-security-taglibs-4.1.0.RELEASE-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://F:/develop/maven/apache-maven-3.6.0/mvn_respository/org/springframework/security/spring-security-taglibs/4.1.0.RELEASE/spring-security-taglibs-4.1.0.RELEASE-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
