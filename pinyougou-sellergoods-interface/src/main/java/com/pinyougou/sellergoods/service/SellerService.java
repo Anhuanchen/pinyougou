@@ -3,6 +3,7 @@ import java.util.List;
 
 import PageResult.PageResult;
 import com.pinyougou.pojo.TbSeller;
+import PageResult.InsertResult;
 
 /**
  * 服务层接口
@@ -58,5 +59,12 @@ public interface SellerService {
 	 * @return
 	 */
 	public PageResult findPage(TbSeller seller, int pageNum, int pageSize);
-	
+
+	/**
+	 * 修改状态
+	 * @param sellerId
+	 * @param status
+	 */
+    public void updateStatus(String sellerId, String status);
+
 }

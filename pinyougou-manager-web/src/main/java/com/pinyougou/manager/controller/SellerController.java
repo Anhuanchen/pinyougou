@@ -72,8 +72,19 @@ public class SellerController {
 			e.printStackTrace();
 			return new InsertResult(false, "修改失败");
 		}
-	}	
-	
+	}
+
+	@RequestMapping("/updateStatus")
+	public InsertResult update(String sellerId,String status){
+		try {
+			sellerService.updateStatus(sellerId,status);
+			return new InsertResult(true, "修改成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new InsertResult(false, "修改失败");
+		}
+	}
+
 	/**
 	 * 获取实体
 	 * @param id
@@ -107,7 +118,7 @@ public class SellerController {
 	 * @param rows
 	 * @return
 	 */
-	@RequestMapping("/search")
+	@RequestMapping("/findIndistinct")
 	public PageResult search(@RequestBody TbSeller seller, int page, int rows  ){
 		return sellerService.findPage(seller, page, rows);		
 	}

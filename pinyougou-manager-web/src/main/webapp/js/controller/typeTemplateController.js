@@ -109,5 +109,10 @@ app.controller('typeTemplateController' ,function($scope,$controller,typeTemplat
     $scope.deleTableRow=function (index) {
         $scope.entity.customAttributeItems.splice(index,1);
     }
-    
+
+    //类型转换
+	$scope.change=function (A) {
+		return parseInt(A);
+    }
+
 });	

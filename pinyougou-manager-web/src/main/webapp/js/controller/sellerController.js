@@ -64,17 +64,29 @@ app.controller('sellerController' ,function($scope,$controller   ,sellerService)
 			}		
 		);				
 	}
-	
-	$scope.searchEntity={};//定义搜索对象 
+
+    $scope.IndistinctEntity={};//定义搜索对象
 	
 	//搜索
-	$scope.search=function(page,rows){			
-		sellerService.search(page,rows,$scope.searchEntity).success(
+	$scope.findIndistinct=function(page,rows){
+		sellerService.findIndistinct(page,rows,$scope.IndistinctEntity).success(
 			function(response){
 				$scope.list=response.rows;	
-				$scope.paginationConf.totalItems=response.total;//更新总记录数
+				$scope.paginationConf.totalItems=response.totalCount;//更新总记录数
 			}			
 		);
 	}
+
+
+	$scope.updateStatus=function (sellerId,status) {
+		sellerService.updateStatus(sellerId,status).success(
+			function (response) {
+                if(response.success){
+                    $scope.reloadList();//刷新列表
+                }else{
+                    alert("修改失败啦");
+                }
+            });
+    }
     
 });	

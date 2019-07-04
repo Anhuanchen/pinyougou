@@ -1,4 +1,5 @@
 package com.pinyougou.sellergoods.service.impl;
+import java.util.Date;
 import java.util.List;
 
 import PageResult.PageResult;
@@ -11,6 +12,8 @@ import com.pinyougou.pojo.TbSeller;
 import com.pinyougou.pojo.TbSellerExample;
 import com.pinyougou.pojo.TbSellerExample.Criteria;
 import com.pinyougou.sellergoods.service.SellerService;
+
+import PageResult.InsertResult;
 
 /**
  * 服务实现层
@@ -46,6 +49,10 @@ public class SellerServiceImpl implements SellerService {
 	 */
 	@Override
 	public void add(TbSeller seller) {
+		//设置状态为未审核【0】
+		seller.setStatus("0");
+		//设置创建时间为当前时间
+		seller.setCreateTime(new Date());
 		sellerMapper.insert(seller);		
 	}
 
@@ -55,6 +62,7 @@ public class SellerServiceImpl implements SellerService {
 	 */
 	@Override
 	public void update(TbSeller seller){
+
 		sellerMapper.updateByPrimaryKey(seller);
 	}	
 	
@@ -73,9 +81,9 @@ public class SellerServiceImpl implements SellerService {
 	 */
 	@Override
 	public void delete(String[] ids) {
-		for(String id:ids){
+		for (String id : ids) {
 			sellerMapper.deleteByPrimaryKey(id);
-		}		
+		}
 	}
 	
 	
@@ -159,5 +167,13 @@ public class SellerServiceImpl implements SellerService {
 		Page<TbSeller> page= (Page<TbSeller>)sellerMapper.selectByExample(example);		
 		return new PageResult(page.getTotal(), page.getResult());
 	}
-	
+
+	@Override
+	public void updateStatus(String sellerId, String status) {
+		TbSeller tbSeller = sellerMapper.selectByPrimaryKey(sellerId);
+		tbSeller.setStatus(status);
+		sellerMapper.updateByPrimaryKey(tbSeller);
+	}
+
+
 }
