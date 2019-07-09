@@ -21,6 +21,7 @@ app.controller("baseController", function ($scope) {
         $scope.findIndistinct($scope.paginationConf.currentPage, $scope.paginationConf.itemsPerPage);
     };
 
+
     //定义一个数组ids来接收传递的id
     $scope.ids=[];
     //将传递的id存储进ids

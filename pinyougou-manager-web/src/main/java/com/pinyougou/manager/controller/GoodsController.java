@@ -2,6 +2,7 @@ package com.pinyougou.manager.controller;
 import java.util.List;
 
 import PageResult.PageResult;
+import com.pinyougou.pojogroup.Goods;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,7 +51,8 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/add")
-	public InsertResult add(@RequestBody TbGoods goods){
+	public InsertResult add(@RequestBody Goods goods){
+
 		try {
 			goodsService.add(goods);
 			return new InsertResult(true, "增加成功");
@@ -82,7 +84,7 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/findOne")
-	public TbGoods findOne(Long id){
+	public Goods findOne(Long id){
 		return goodsService.findOne(id);		
 	}
 	

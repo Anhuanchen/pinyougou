@@ -5,6 +5,7 @@ import com.pinyougou.pojo.TbItemCatExample;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TbItemCatMapper {
     int countByExample(TbItemCatExample example);
@@ -28,4 +29,5 @@ public interface TbItemCatMapper {
     int updateByPrimaryKeySelective(TbItemCat record);
 
     int updateByPrimaryKey(TbItemCat record);
+
 }

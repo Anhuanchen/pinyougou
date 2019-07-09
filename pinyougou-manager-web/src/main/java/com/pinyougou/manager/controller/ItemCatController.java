@@ -12,6 +12,7 @@ import com.pinyougou.sellergoods.service.ItemCatService;
 import PageResult.DeleteResult;
 import PageResult.InsertResult;
 /**
+ * 商品分类控制
  * controller
  * @author Administrator
  *
@@ -110,6 +111,16 @@ public class ItemCatController {
 	@RequestMapping("/search")
 	public PageResult search(@RequestBody TbItemCat itemCat, int page, int rows  ){
 		return itemCatService.findPage(itemCat, page, rows);		
+	}
+
+	/**
+	 * 根据上级Id查询当前级数据
+	 * @param parentId
+	 * @return
+	 */
+	@RequestMapping("/findByParentId")
+	public List<TbItemCat> findByParentId(Long parentId){
+		return itemCatService.findByParentId(parentId);
 	}
 	
 }

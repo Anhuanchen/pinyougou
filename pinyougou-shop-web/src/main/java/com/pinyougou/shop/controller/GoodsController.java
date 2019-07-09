@@ -1,7 +1,11 @@
 package com.pinyougou.shop.controller;
+import java.util.Date;
 import java.util.List;
 
 import PageResult.PageResult;
+import com.pinyougou.pojogroup.Goods;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,10 +40,10 @@ public class GoodsController {
 	 * 返回全部列表
 	 * @return
 	 */
-	@RequestMapping("/findPage")
-	public PageResult findPage(int page, int rows){
-		return goodsService.findPage(page, rows);
-	}
+//	@RequestMapping("/findPage")
+//	public PageResult findPage(int page, int rows){
+//		return goodsService.findPage(page, rows);
+//	}
 	
 	/**
 	 * 增加
@@ -47,7 +51,9 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/add")
-	public InsertResult add(@RequestBody TbGoods goods){
+	public InsertResult add(@RequestBody Goods goods){
+		String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
+		goods.getTbGoods().setSellerId(sellerId);
 		try {
 			goodsService.add(goods);
 			return new InsertResult(true, "增加成功");
@@ -79,8 +85,8 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/findOne")
-	public TbGoods findOne(Long id){
-		return goodsService.findOne(id);		
+	public Goods findOne(Long id){
+		return goodsService.findOne(id);
 	}
 	
 	/**
@@ -108,7 +114,10 @@ public class GoodsController {
 	 */
 	@RequestMapping("/search")
 	public PageResult search(@RequestBody TbGoods goods, int page, int rows  ){
-		return goodsService.findPage(goods, page, rows);		
+		String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
+		//添加查询条件
+		goods.setSellerId(sellerId);
+		return goodsService.findPage(goods, page, rows);
 	}
 	
 }
