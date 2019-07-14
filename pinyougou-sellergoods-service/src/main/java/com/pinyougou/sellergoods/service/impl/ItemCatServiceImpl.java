@@ -12,6 +12,7 @@ import com.pinyougou.pojo.TbItemCat;
 import com.pinyougou.pojo.TbItemCatExample;
 import com.pinyougou.pojo.TbItemCatExample.Criteria;
 import com.pinyougou.sellergoods.service.ItemCatService;
+import org.springframework.data.redis.core.RedisTemplate;
 
 
 /**
@@ -24,7 +25,8 @@ public class ItemCatServiceImpl implements ItemCatService {
 
 	@Autowired
 	private TbItemCatMapper itemCatMapper;
-	
+	@Autowired
+	private RedisTemplate redisTemplate;
 	/**
 	 * 查询全部
 	 */
@@ -116,7 +118,14 @@ public class ItemCatServiceImpl implements ItemCatService {
 		TbItemCatExample example = new TbItemCatExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andParentIdEqualTo(parentId);
-
+		//每次执行查询的时候，一次性读取缓存进存储（因为每次增删改都要执行查询）
+		List<TbItemCat> list = findAll();
+		System.out.println("开始将模板id放入缓存");
+		for (TbItemCat itemCat : list) {
+			//以name作key，以typeId作值
+			redisTemplate.boundHashOps("itemCat").put(itemCat.getName(),itemCat.getTypeId());
+		}
+		System.out.println("模板id放入缓存结束");
 		List<TbItemCat> tbItemCats = itemCatMapper.selectByExample(example);
 
 		return tbItemCats;

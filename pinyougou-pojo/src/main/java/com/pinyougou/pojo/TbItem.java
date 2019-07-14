@@ -1,33 +1,38 @@
 package com.pinyougou.pojo;
 
+import org.apache.solr.client.solrj.beans.Field;
+import org.springframework.data.solr.core.mapping.Dynamic;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Map;
 
-public class TbItem  implements Serializable {
-    private Long id; //商品id，同时也是商品编号
+public class TbItem implements Serializable {
+    @Field
+    private Long id;
+    @Field("item_title")
+    private String title;
 
-    private String title;//商品标题
-
-    private String sellPoint;//商品卖点
-
-    private BigDecimal price;//商品价格，单位:元
+    private String sellPoint;
+    @Field("item_price")
+    private BigDecimal price;
 
     private Integer stockCount;
 
-    private Integer num;//库存数量
+    private Integer num;
 
-    private String barcode;//商品条形码
+    private String barcode;
+    @Field("item_image")
+    private String image;
 
-    private String image;//商品图片
+    private Long categoryid;
 
-    private Long categoryid;//所属类目，叶子类目
+    private String status;
 
-    private String status;//商品状态，1-正常，2-下架，3-删除
+    private Date createTime;
 
-    private Date createTime;//创建时间
-
-    private Date updateTime;//更新时间
+    private Date updateTime;
 
     private String itemSn;
 
@@ -36,20 +41,30 @@ public class TbItem  implements Serializable {
     private BigDecimal marketPrice;
 
     private String isDefault;
-
+    @Field("item_goodsid")
     private Long goodsId;
 
     private String sellerId;
 
     private String cartThumbnail;
-
+    @Field("item_category")
     private String category;
-
+    @Field("item_brand")
     private String brand;
-
     private String spec;
-
+    @Field("item_seller")
     private String seller;
+    @Dynamic
+    @Field("item_spec_*")
+    private Map<String,String> specMap;
+
+    public Map<String, String> getSpecMap() {
+        return specMap;
+    }
+
+    public void setSpecMap(Map<String, String> specMap) {
+        this.specMap = specMap;
+    }
 
     public Long getId() {
         return id;

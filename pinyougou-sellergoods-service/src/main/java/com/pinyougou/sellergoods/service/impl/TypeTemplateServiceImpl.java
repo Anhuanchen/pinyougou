@@ -4,6 +4,7 @@ import java.util.Map;
 
 import PageResult.PageResult;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.pinyougou.mapper.TbSpecificationOptionMapper;
 import com.pinyougou.pojo.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import com.github.pagehelper.PageHelper;
 import com.pinyougou.mapper.TbTypeTemplateMapper;
 import com.pinyougou.pojo.TbTypeTemplateExample.Criteria;
 import com.pinyougou.sellergoods.service.TypeTemplateService;
+import org.springframework.data.redis.core.RedisTemplate;
 
 
 /**
@@ -27,7 +29,8 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 	private TbTypeTemplateMapper typeTemplateMapper;
 	@Autowired
 	private TbSpecificationOptionMapper specificationOptionMapper;
-	
+	@Autowired
+	private RedisTemplate redisTemplate;
 	/**
 	 * 查询全部
 	 */
@@ -84,7 +87,7 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 	}
 	
 	
-		@Override
+	@Override
 	public PageResult findPage(TbTypeTemplate typeTemplate, int pageNum, int pageSize) {
 		PageHelper.startPage(pageNum, pageSize);
 		
@@ -104,10 +107,12 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 			if(typeTemplate.getCustomAttributeItems()!=null && typeTemplate.getCustomAttributeItems().length()>0){
 				criteria.andCustomAttributeItemsLike("%"+typeTemplate.getCustomAttributeItems()+"%");
 			}
-	
 		}
 		
-		Page<TbTypeTemplate> page= (Page<TbTypeTemplate>)typeTemplateMapper.selectByExample(example);		
+		Page<TbTypeTemplate> page= (Page<TbTypeTemplate>)typeTemplateMapper.selectByExample(example);
+		//缓存到数据库
+		saveToRedis();
+
 		return new PageResult(page.getTotal(), page.getResult());
 	}
 
@@ -132,6 +137,26 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 			map.put("options",options);
 		}
 		return list;
+	}
+
+	/**
+	 * 缓存模板列表和规格列表
+	 */
+	private void saveToRedis(){
+		//获取模板数据
+		List<TbTypeTemplate> tbTypeTemplates = findAll();
+		//循环模板数据
+		for (TbTypeTemplate tbTypeTemplate : tbTypeTemplates) {
+			//存储品牌列表
+			List<Map> brandList = JSON.parseArray(tbTypeTemplate.getBrandIds(),Map.class);
+			redisTemplate.boundHashOps("brandList").put(tbTypeTemplate.getId(),brandList);
+			//存储规格列表
+			//根据模板Id查询规格列表【外键关联查询】
+			List<Map> specList = findSpecList(tbTypeTemplate.getId());
+			redisTemplate.boundHashOps("specList").put(tbTypeTemplate.getId(),specList);
+			System.out.println("存储品牌列表和规格列表进redis");
+		}
+
 	}
 
 }
