@@ -23,6 +23,25 @@
         <module>pinyougou-search-interface</module>
         <module>pinyougou-search-service</module>
         <module>pinyougou-search-web</module>
+        <module>freemarkerDemo</module>
+        <module>pinyougou-page-interface</module>
+        <module>pinyougou-page-service</module>
+        <module>pinyougou-page-web</module>
+        <module>activemqDemo</module>
+        <module>springjms_producer</module>
+        <module>springjms-consumer</module>
+        <module>itcast_sms_server</module>
+        <module>itcast_sms_controllerDemo</module>
+        <module>pinyougou-user-interface</module>
+        <module>pinyougou-user-service</module>
+        <module>pinyougou-user-web</module>
+        <module>casclient_demo1</module>
+        <module>casclient_demo2</module>
+        <module>casclient-demo3</module>
+        <module>casclient_demo3</module>
+        <module>pinyougou-cart-interface</module>
+        <module>pinyougou-cart-service</module>
+        <module>pinyougou-cart-web</module>
     </modules>
     <packaging>pom</packaging>
 

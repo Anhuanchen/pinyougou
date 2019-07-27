@@ -32,6 +32,10 @@ app.controller('goodsController', function ($scope, $controller, $location, good
                 $scope.entity.goodsDesc.customAttributeItems = JSON.parse($scope.entity.goodsDesc.customAttributeItems);
                 //规格
                 $scope.entity.goodsDesc.specificationItems = JSON.parse($scope.entity.goodsDesc.specificationItems);
+                //SKU列表规格列转换
+                for (var i = 0; i < $scope.entity.itemList.length; i++) {
+                    $scope.entity.itemList[i].spec=JSON.parse($scope.entity.itemList[i].spec);
+                }
             }
         );
     }
@@ -53,8 +57,11 @@ app.controller('goodsController', function ($scope, $controller, $location, good
 
     //保存
     $scope.save = function () {
+        //提取文本编辑器的值
+        $scope.entity.goodsDesc.introduction=editor.html();
+        var item = $scope.entity.goodsDesc.specificationItems;
         var serviceObject;//服务层对象
-        if ($scope.entity.id != null) {//如果有ID
+        if ($scope.entity.tbGoods.id != null) {//如果有ID
             serviceObject = goodsService.update($scope.entity); //修改
         } else {
             serviceObject = goodsService.add($scope.entity);//增加
@@ -62,8 +69,8 @@ app.controller('goodsController', function ($scope, $controller, $location, good
         serviceObject.success(
             function (response) {
                 if (response.success) {
-                    //重新查询
-                    $scope.reloadList();//重新加载
+                    alert('保存成功');
+                    location.href="goods.html";
                 } else {
                     alert(response.message);
                 }
@@ -72,20 +79,20 @@ app.controller('goodsController', function ($scope, $controller, $location, good
     }
 
     //增加
-    $scope.add = function () {
-        $scope.entity.goodsDesc.introduction = editor.html();
-        goodsService.add($scope.entity).success(
-            function (response) {
-                if (response.success) {
-                    alert('保存成功');
-                    $scope.entity = {};
-                    editor.html(""); //清空富文本编辑器
-                } else {
-                    alert(response.message);
-                }
-            }
-        );
-    }
+    // $scope.add = function () {
+    //     $scope.entity.goodsDesc.introduction = editor.html();
+    //     goodsService.add($scope.entity).success(
+    //         function (response) {
+    //             if (response.success) {
+    //                 alert('保存成功');
+    //                 $scope.entity = {};
+    //                 editor.html(""); //清空富文本编辑器
+    //             } else {
+    //                 alert(response.message);
+    //             }
+    //         }
+    //     );
+    // }
 
 
     //批量删除
@@ -239,7 +246,7 @@ app.controller('goodsController', function ($scope, $controller, $location, good
     }
 
 
-    $scope.status = ['未审核', '已审核', '审核未通过', '关闭'];//商品状态
+    $scope.status = ['未审核', '已审核', '审核未通过', '关闭'];//商品审核状态
 
     $scope.itemCatList = [];
 
@@ -252,5 +259,21 @@ app.controller('goodsController', function ($scope, $controller, $location, good
                     $scope.itemCatList[response[i].id] = response[i].name
                 }
             });
+    }
+
+    $scope.isMarketable = ['下架', '上架'];//商品上下架状态
+
+    //修改商品上下架状态
+    $scope.changeIsMarketable=function (status) {
+        goodsService.changeIsMarketable($scope.selectIds,status).success(
+            function (response) {
+                if(response.success){
+                    $scope.reloadList();
+                    $scope.selectIds=[];
+                }else{
+                    alert(response.message);
+                }
+            }
+        );
     }
 });	

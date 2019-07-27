@@ -1,5 +1,6 @@
 package com.pinyougou.search.controller;
 
+import PageResult.InsertResult;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.search.service.ItemSearchService;
 import org.springframework.web.bind.annotation.RequestBody;

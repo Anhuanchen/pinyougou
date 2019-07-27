@@ -117,7 +117,7 @@
 		                           
 		                           <div class="col-md-2 title editer">商品介绍</div>
                                    <div class="col-md-10 data editer">
-                                       <textarea name="content" style="width:800px;height:400px;visibility:hidden;" ></textarea>
+                                       <textarea name="content" style="width:800px;height:400px;visibility:hidden;" ng-model="entity.goodsDesc.introduction"></textarea>
                                    </div>
 		                           
 		                           <div class="col-md-2 title rowHeight2x">包装列表</div>
@@ -160,7 +160,7 @@
 									            <td>
 									           		<img alt="" src="{{pojo.url}}" width="100px" height="100px">
 									            </td>
-												 <td> <button type="button" class="btn btn-default" title="删除" ><i class="fa fa-trash-o" ng-click="remove_image_entity($index)"></i> 删除</button></td>
+												 <td> <button type="button" class="btn btn-default" title="删除" ><i class="fa fa-trash-o"  ng-click="remove_image_entity($index)"></i> 删除</button></td>
 					                      </tr>
 					                    </tbody>
 								 </table> 
@@ -208,7 +208,7 @@
 		                                </div>
 	                                </div>
 	
-	                                {{entity.itemList}}
+
 	                                <div class="row data-type">
 	                                	 <table class="table table-bordered table-striped table-hover dataTable">
 						                    <thead>
@@ -258,7 +258,7 @@
                  	
                    </div>
                   <div class="btn-toolbar list-toolbar">
-				      <button class="btn btn-primary" ng-click="add()" ><i class="fa fa-save"></i>保存</button>
+				      <button class="btn btn-primary" ng-click="save()" ><i class="fa fa-save"></i>保存</button>
 				      <button class="btn btn-default" >返回列表</button>
 				  </div>
 			

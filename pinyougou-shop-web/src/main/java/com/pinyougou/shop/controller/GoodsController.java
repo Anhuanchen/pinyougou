@@ -1,4 +1,5 @@
 package com.pinyougou.shop.controller;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -69,7 +70,16 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/update")
-	public InsertResult update(@RequestBody TbGoods goods){
+	public InsertResult update(@RequestBody Goods goods){
+		//首先判断商品是否是该商家的商品
+		String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();//当前商家id
+		Goods goods2 = goodsService.findOne(goods.getTbGoods().getId());
+		//判断当前的商家sellerid和传过来的商家的商家id
+		if(!goods2.getTbGoods().getSellerId().equals(sellerId)||!goods.getTbGoods().getSellerId().equals(sellerId)){
+			return new InsertResult(false,"非法操作");
+		}
+
+
 		try {
 			goodsService.update(goods);
 			return new InsertResult(true, "修改成功");
@@ -118,6 +128,18 @@ public class GoodsController {
 		//添加查询条件
 		goods.setSellerId(sellerId);
 		return goodsService.findPage(goods, page, rows);
+	}
+
+
+	@RequestMapping("/changeIsMarketable")
+	public InsertResult changeIsMarketable(Long []ids,String status){
+		try{
+			goodsService.changeIsMarketable(ids,status);
+			return new InsertResult(true,"成功");
+		}catch (Exception e){
+			e.printStackTrace();
+			return new InsertResult(false,"失败");
+		}
 	}
 	
 }

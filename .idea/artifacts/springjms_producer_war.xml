@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="springjms_producer:war">
+    <output-path>$PROJECT_DIR$/springjms_producer/target</output-path>
+    <root id="archive" name="springjms_producer-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="springjms_producer:war exploded" />
+    </root>
+  </artifact>
+</component>

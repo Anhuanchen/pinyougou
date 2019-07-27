@@ -3,6 +3,7 @@ import java.util.List;
 
 import PageResult.PageResult;
 import com.pinyougou.pojo.TbGoods;
+import com.pinyougou.pojo.TbItem;
 import com.pinyougou.pojogroup.Goods;
 
 /**
@@ -23,7 +24,7 @@ public interface GoodsService {
 	 * 返回分页列表
 	 * @return
 	 */
-	public PageResult findPage(int pageNum, int pageSize);
+	//public PageResult findPage(int pageNum, int pageSize);
 	
 	
 	/**
@@ -35,7 +36,7 @@ public interface GoodsService {
 	/**
 	 * 修改
 	 */
-	public void update(TbGoods goods);
+	public void update(Goods goods);
 	
 
 	/**
@@ -59,5 +60,25 @@ public interface GoodsService {
 	 * @return
 	 */
 	public PageResult findPage(TbGoods goods, int pageNum, int pageSize);
-	
+
+	/**
+	 * 根据商品ID和状态查询Item表信息
+	 * @param goodsIds
+	 * @param status
+	 * @return
+	 */
+	public List<TbItem> findItemListByGoodsIdAndStatus(Long []goodsIds,String status);
+
+	/**
+	 * 商品的审核和驳回
+	 * @param ids
+	 * @param status
+	 */
+	public void updateStatus(Long []ids,String status);
+
+	/**
+	 * 修改商品上下架状态
+	 * @param status
+	 */
+	public void changeIsMarketable(Long []ids,String status);
 }

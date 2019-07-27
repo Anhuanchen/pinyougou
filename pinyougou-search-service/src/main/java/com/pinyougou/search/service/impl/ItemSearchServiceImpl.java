@@ -8,6 +8,7 @@ import com.pinyougou.pojo.TbItemCatExample;
 import com.pinyougou.search.service.ItemSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.core.query.*;
@@ -44,6 +45,10 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 //        //获取查询对象，并封装
 //        map.put("rows",page.getContent());
 //        return map;
+
+        //关键字空格处理
+        String keywords = (String) searchMap.get("keywords");
+        searchMap.put("keywords",keywords.replace(" ",""));
         //1.按照关键字查询（高亮显示关键字）
         Map<String,Object> map = new HashMap<>();
         map.putAll(searchList(searchMap));
@@ -64,6 +69,8 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         map.put("categoryList",categorylist);
         return map;
     }
+
+
 
     /**
      * 根据关键字搜索列表
@@ -109,6 +116,46 @@ public class ItemSearchServiceImpl implements ItemSearchService {
                 query.addFilterQuery(filterQuery);
             }
         }
+        //1.5按照价格分类过滤
+        if(!"".equals(searchMap.get("price"))){
+            String price = (String) searchMap.get("price");
+            String[] prices = price.split("-");
+            Criteria criteria1 = new Criteria("item_price").greaterThanEqual(prices[0]);
+            FilterQuery filterQuery = new SimpleFilterQuery(criteria1);
+            query.addFilterQuery(filterQuery);
+            if(!prices[1].equals("*")){
+                //如果区间终点不等于*
+                Criteria criteria2 = new Criteria("item_price").lessThanEqual(prices[1]);
+                FilterQuery filterQuery1 = new SimpleFilterQuery(criteria2);
+                query.addFilterQuery(filterQuery1);
+            }
+        }
+        //1.6分页查询
+        Integer pageNo = (Integer) searchMap.get("pageNo"); //接收传递过来的当前页
+        if(pageNo==null){
+            pageNo=1;//默认当前页为第一页
+        }
+        Integer pageSize = (Integer) searchMap.get("pageSize");//接收传递过来的每页记录数
+        if(pageSize==null){
+            pageSize=20;//默认每页显示20条
+        }
+        query.setOffset((pageNo-1)*pageSize);//从第几条开始查询
+        query.setRows(pageSize);//查询多少条
+        //1.7升降序查询
+        String sortValue = (String) searchMap.get("sort");//ASC  DESC
+        String sortField = (String) searchMap.get("sortField");//排序字段
+        if(sortValue!=null&&sortValue!=""){
+            if(sortValue.equals("ASC")){
+                Sort sort = new Sort(Sort.Direction.ASC, "item_" + sortField);
+                query.addSort(sort);
+            }
+            if(sortValue.equals("DESC")){
+                Sort sort = new Sort(Sort.Direction.DESC, "item_" + sortField);
+                query.addSort(sort);
+            }
+
+
+        }
 
         //获取高亮页page对象
         HighlightPage<TbItem> page = solrTemplate.queryForHighlightPage(query, TbItem.class);
@@ -124,6 +171,8 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 
         //获取查询对象，并封装
         map.put("rows",page.getContent());
+        map.put("totalPages",page.getTotalPages());//返回总页数
+        map.put("total",page.getTotalElements());//返回总记录数
         return map;
     }
 
@@ -176,6 +225,29 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             map.put("specList",specList);
         }
         return map;
+    }
+
+    /**
+     * 增量更新，导入数据
+     * @param list
+     */
+    @Override
+    public void importList(List list) {
+        solrTemplate.saveBeans(list);
+        solrTemplate.commit();
+    }
+
+    /**
+     * 增量删除
+     * @param goodsIdList
+     */
+    @Override
+    public void deleteByGoodsIds(List goodsIdList) {
+        Query query = new SimpleQuery();
+        Criteria criteria = new Criteria("item_goodsid").in(goodsIdList);
+        query.addCriteria(criteria);
+        solrTemplate.delete(query);
+        solrTemplate.commit();
     }
 
 
