@@ -5,19 +5,16 @@
 						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
 <!--设置放行的界面-->
-    <http pattern="./*.html" security="none"></http>
-    <http pattern="./img/**"  security="none"></http>
-    <http pattern="./css/**"  security="none"></http>
-    <http pattern="./fonts/**"  security="none"></http>
-    <http pattern="./js/**"  security="none"></http>
-    <http pattern="./plugins/**"  security="none"></http>
+    <http pattern="/img/**"  security="none"></http>
+    <http pattern="/css/**"  security="none"></http>
+    <http pattern="/fonts/**"  security="none"></http>
+    <http pattern="/js/**"  security="none"></http>
+    <http pattern="/plugins/**"  security="none"></http>
 
-
-    <http pattern="./cart/login.html" security="none"></http>
-    <http pattern="cart/findCartList.do" security="none"></http>
-    <http pattern="cart/addGoodsToCartList.do" security="none"></http>
+    <http pattern="/cart.html" security="none"></http>
     <!--entry-point-ref入口点引用-->
     <http use-expressions="false" entry-point-ref="casProcessingFilterEntryPoint">
+        <intercept-url pattern="/cart/*.do" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <intercept-url pattern="/**" access="ROLE_USER"/>
         <!--关闭跨域请求-->
         <csrf disabled="true"/>

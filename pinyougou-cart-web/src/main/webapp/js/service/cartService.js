@@ -10,11 +10,13 @@ app.service('cartService',function ($http) {
     this.sum=function (cartList) {
         var totalValue={totalNum:0,totalMoney:0};//合计实体
         for(var i = 0;i<cartList.length;i++){
-            for(var j=0;j<cartList[i].orderItemList.length;j++){
-                var orderItem = cartList[i].orderItem[j];//购物车明细
+            var cart = cartList[i];
+            for(var j=0;j<cart.orderItemList.length;j++){
+                var orderItem = cart.orderItemList[j];//购物车明细
                 totalValue.totalNum+=orderItem.num;
                 totalValue.totalMoney+=orderItem.totalFee;
             }
         }
+        return totalValue;
     }
 })

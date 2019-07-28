@@ -8,6 +8,7 @@ import com.pinyougou.pojo.TbItem;
 import com.pinyougou.pojo.TbOrderItem;
 import com.pinyougou.pojogroup.Cart;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -18,7 +19,8 @@ public class CartServiceImpl implements CartService {
     private TbItemMapper tbItemMapper;
     @Autowired
     private TbOrderItemMapper tbOrderItemMapper;
-
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Override
     public List<Cart> addGoodsToCartList(List<Cart> cartList, Long itemId, Integer num) {
@@ -59,7 +61,7 @@ public class CartServiceImpl implements CartService {
             }else{
                 //已经有了，增加数量，修改金额
                 tbOrderItem.setNum(tbOrderItem.getNum()+num);
-                tbOrderItem.setPrice(new BigDecimal(tbOrderItem.getNum()*tbOrderItem.getPrice().doubleValue()));
+                tbOrderItem.setTotalFee(new BigDecimal(tbOrderItem.getNum()*tbOrderItem.getPrice().doubleValue()));
                 //如果操作后小于等于0，则移除明细
                 if(tbOrderItem.getNum()<=0){
                     cart.getOrderItemList().remove(tbOrderItem);
@@ -73,6 +75,51 @@ public class CartServiceImpl implements CartService {
         }
         return cartList;
     }
+
+    /**
+     * 从redis中查询购物车数据
+     * @param username
+     * @return
+     */
+    @Override
+    public List<Cart> findCartListFromRedis(String username) {
+        System.out.println("从redis中提取购物车数据"+username);
+        List<Cart> cartList = (List<Cart>) redisTemplate.boundHashOps("cartList").get(username);
+        if(cartList==null){
+            //如果没有返回一个空数组
+            cartList=new ArrayList<>();
+        }
+        return cartList;
+    }
+
+    /**
+     * 将该用户的购物车数据存储到redis
+     * @param username
+     * @param cartList
+     */
+    @Override
+    public void saveCartListToRedis(String username, List<Cart> cartList) {
+        System.out.println("向reids存入购物车数据……"+username);
+        redisTemplate.boundHashOps("cartList").put(username,cartList);
+    }
+
+    /**
+     * 合并购物车
+     * @param cartList1
+     * @param cartList2
+     * @return
+     */
+    @Override
+    public List<Cart> mergeCartList(List<Cart> cartList1, List<Cart> cartList2) {
+        System.out.println("合并购物车");
+        for (Cart cart : cartList1) {
+            for (TbOrderItem tbOrderItem : cart.getOrderItemList()) {
+                cartList2=addGoodsToCartList(cartList2,tbOrderItem.getItemId(),tbOrderItem.getNum());
+            }
+        }
+        return  cartList2;
+    }
+
 
     /**
      * 根据商品明细id查询
