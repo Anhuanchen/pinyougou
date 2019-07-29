@@ -1,5 +1,5 @@
  //控制层 
-app.controller('goodsController' ,function($scope,$controller   ,goodsService){	
+app.controller('goodsController' ,function($scope,$controller,goodsService,itemCatService){
 	
 	$controller('baseController',{$scope:$scope});//继承
 	
@@ -55,7 +55,7 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService){
 	//批量删除 
 	$scope.dele=function(){			
 		//获取选中的复选框			
-		goodsService.dele( $scope.selectIds ).success(
+		goodsService.dele( $scope.selectIds).success(
 			function(response){
 				if(response.success){
 					$scope.reloadList();//刷新列表
@@ -64,17 +64,44 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService){
 			}		
 		);				
 	}
-	
-	$scope.searchEntity={};//定义搜索对象 
-	
+
 	//搜索
-	$scope.search=function(page,rows){			
-		goodsService.search(page,rows,$scope.searchEntity).success(
+	$scope.findIndistinct=function(page,rows){
+		goodsService.search(page,rows,$scope.IndistinctEntity).success(
 			function(response){
 				$scope.list=response.rows;	
-				$scope.paginationConf.totalItems=response.total;//更新总记录数
+				$scope.paginationConf.totalItems=response.totalCount;//更新总记录数
 			}			
 		);
 	}
-    
+
+    $scope.status = ['未审核', '已审核', '审核未通过', '关闭'];
+
+    $scope.itemCatList = [];
+    //加载商品分类列表,根据id，设置name
+    $scope.findItemCatList = function () {
+        itemCatService.findAll().success(
+            function (response) {
+                for (var i = 0; i < response.length; i++) {
+                    //根据id获取name
+                    $scope.itemCatList[response[i].id] = response[i].name
+                }
+            });
+    }
+
+    //更该状态
+    $scope.updateStatus=function (status) {
+        goodsService.updateStatus($scope.ids,status).success(
+            function (response) {
+                if(response.success){//成功
+                    $scope.reloadList();//刷新列表
+                    $scope.selectIds=[];//清空 ID 集合
+                }else{
+                    alert(response.message);
+                }
+            }
+        );
+    }
+
+
 });	

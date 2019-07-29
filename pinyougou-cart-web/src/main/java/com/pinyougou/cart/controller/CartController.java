@@ -76,6 +76,9 @@ public class CartController {
      */
     @RequestMapping("/addGoodsToCartList")
     public InsertResult addGoodsToCartList(Long itemId,Integer num){
+        //允许的跨域请求
+        response.setHeader("Access-Control-Allow-Origin","http://localhost:9105");
+        response.setHeader("Access-Control-Allow-Credentials", "true");//允许cookie
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         System.out.println("当前登录用户："+name);
         try{

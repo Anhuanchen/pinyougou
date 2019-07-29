@@ -21,9 +21,6 @@ app.controller("baseController", function ($scope) {
         }
     };
 
-
-
-
     //定义一个数组ids来接收传递的id
     $scope.ids=[];
     //将传递的id存储进ids
@@ -50,6 +47,6 @@ app.controller("baseController", function ($scope) {
             value+=json[i][key];
         }
         return value;
-
     }
+
 })
