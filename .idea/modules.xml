@@ -27,6 +27,8 @@
       <module fileurl="file://$PROJECT_DIR$/pinyougou-page-interface/pinyougoupageinterface.iml" filepath="$PROJECT_DIR$/pinyougou-page-interface/pinyougoupageinterface.iml" />
       <module fileurl="file://$PROJECT_DIR$/pinyougou-page-service/pinyougoupageservice.iml" filepath="$PROJECT_DIR$/pinyougou-page-service/pinyougoupageservice.iml" />
       <module fileurl="file://$PROJECT_DIR$/pinyougou-page-web/pinyougoupageweb.iml" filepath="$PROJECT_DIR$/pinyougou-page-web/pinyougoupageweb.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pinyougou-pay-interface/pinyougoupayinterface.iml" filepath="$PROJECT_DIR$/pinyougou-pay-interface/pinyougoupayinterface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pinyougou-pay-service/pinyougoupayservice.iml" filepath="$PROJECT_DIR$/pinyougou-pay-service/pinyougoupayservice.iml" />
       <module fileurl="file://$PROJECT_DIR$/pinyougou-portal-web/pinyougouportalweb.iml" filepath="$PROJECT_DIR$/pinyougou-portal-web/pinyougouportalweb.iml" />
       <module fileurl="file://$PROJECT_DIR$/pinyougou-search-interface/pinyougousearchinterface.iml" filepath="$PROJECT_DIR$/pinyougou-search-interface/pinyougousearchinterface.iml" />
       <module fileurl="file://$PROJECT_DIR$/pinyougou-search-service/pinyougousearchservice.iml" filepath="$PROJECT_DIR$/pinyougou-search-service/pinyougousearchservice.iml" />
